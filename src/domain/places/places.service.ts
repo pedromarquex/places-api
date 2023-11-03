@@ -7,9 +7,13 @@ import { UpdatePlaceDto } from './dto/update-place.dto';
 export class PlacesService {
   constructor(private readonly repository: PrismaService) {}
 
-  async create(createPlaceDto: CreatePlaceDto) {
+  async create(createPlaceDto: CreatePlaceDto, userId: string) {
+    const user = await this.repository.user.findUnique({
+      where: { id: userId },
+    });
+
     const place = await this.repository.place.create({
-      data: createPlaceDto,
+      data: { ...createPlaceDto, user: { connect: { id: user.id } } },
     });
 
     return place;

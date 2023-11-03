@@ -1,4 +1,5 @@
 import { Place as PlaceModel } from '.prisma/client';
+import { AuthGuard } from '@/domain/users/auth.guard';
 import {
   Body,
   Controller,
@@ -7,6 +8,8 @@ import {
   Param,
   Patch,
   Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
@@ -16,9 +19,13 @@ import { PlacesService } from './places.service';
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPlaceDto: CreatePlaceDto): Promise<PlaceModel> {
-    return this.placesService.create(createPlaceDto);
+  create(
+    @Body() createPlaceDto: CreatePlaceDto,
+    @Request() request: Request,
+  ): Promise<PlaceModel> {
+    return this.placesService.create(createPlaceDto, request['userId']);
   }
 
   @Get()

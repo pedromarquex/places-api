@@ -31,11 +31,13 @@ export class PlacesController {
     return this.placesService.findOne(id);
   }
 
+  // TODO: only owner can update
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
     return this.placesService.update(id, updatePlaceDto);
   }
 
+  // TODO: only owner can delete
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.placesService.remove(id);

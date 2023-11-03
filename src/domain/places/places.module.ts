@@ -1,5 +1,5 @@
+import { PrismaModule } from '@/infra/prisma/prisma.module';
 import { Module } from '@nestjs/common';
-import { PrismaModule } from 'src/infra/prisma/prisma.module';
 import { PlacesController } from './places.controller';
 import { PlacesService } from './places.service';
 

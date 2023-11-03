@@ -1,3 +1,4 @@
+import { Place as PlaceModel } from '.prisma/client';
 import {
   Body,
   Controller,
@@ -16,7 +17,7 @@ export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
 
   @Post()
-  create(@Body() createPlaceDto: CreatePlaceDto) {
+  create(@Body() createPlaceDto: CreatePlaceDto): Promise<PlaceModel> {
     return this.placesService.create(createPlaceDto);
   }
 
@@ -27,16 +28,16 @@ export class PlacesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.placesService.findOne(+id);
+    return this.placesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
-    return this.placesService.update(+id, updatePlaceDto);
+    return this.placesService.update(id, updatePlaceDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.placesService.remove(+id);
+    return this.placesService.remove(id);
   }
 }

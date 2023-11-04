@@ -19,4 +19,5 @@
 - [ ] logger
 - [ ] tests
 - [ ] docker
+- [ ] CI/CD
 - [ ] deploy

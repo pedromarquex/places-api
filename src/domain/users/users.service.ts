@@ -88,21 +88,47 @@ export class UsersService {
     };
   }
 
-  private findAll() {
-    return `This action returns all users`;
-  }
+  async updateUser(id: string, updateUserDto: UpdateUserDto, userId: string) {
+    if (id !== userId) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
 
-  private findOne(id: string) {
-    return this.repository.user.findUnique({
+    const { email, name } = updateUserDto;
+
+    const userAlreadyExists = await this.repository.user.findUnique({
+      where: { email },
+    });
+
+    if (userAlreadyExists && userAlreadyExists.id !== id) {
+      throw new HttpException(
+        'User with this email already exists',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return this.repository.user.update({
       where: { id },
+      data: {
+        email,
+        name,
+      },
     });
   }
 
-  private update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  async remove(id: string, userId: string) {
+    if (id !== userId) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
 
-  private remove(id: string) {
-    return `This action removes a #${id} user`;
+    await this.repository.user.update({
+      where: { id },
+      data: {
+        active: false,
+      },
+    });
+
+    return {
+      message: 'User deleted successfully',
+    };
   }
 }

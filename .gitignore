@@ -1,6 +1,7 @@
 # custom
 .env
 *.db
+*.db-journal
 
 # compiled output
 /dist

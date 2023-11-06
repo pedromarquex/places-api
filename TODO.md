@@ -4,13 +4,16 @@
 ### User
 - [x] sign up
 - [x] sign in
+- [x] get logged in user
+- [ ] update user
+- [ ] delete user
 
 ### Places
 - [x] create place
-- [ ] get place
+- [x] get place
 - [ ] get places by user id
-- [ ] update place
-- [ ] delete place
+- [x] update place
+- [x] delete place
 
 ### Enhancements
 - [ ] add image to place

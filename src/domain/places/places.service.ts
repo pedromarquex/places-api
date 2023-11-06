@@ -1,5 +1,5 @@
 import { PrismaService } from '@/infra/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 
@@ -23,22 +23,54 @@ export class PlacesService {
     return await this.repository.place.findMany();
   }
 
-  findOne(id: string) {
-    return this.repository.place.findUnique({
+  async findOne(id: string) {
+    const place = await this.repository.place.findUnique({
       where: { id },
     });
+
+    if (!place) {
+      throw new HttpException('Place not found', HttpStatus.BAD_REQUEST);
+    }
+
+    return place;
   }
 
-  update(id: string, updatePlaceDto: UpdatePlaceDto) {
+  async update(id: string, updatePlaceDto: UpdatePlaceDto, userId: string) {
+    const place = await this.repository.place.findUnique({
+      where: { id },
+    });
+
+    if (!place) {
+      throw new HttpException('Place not found', HttpStatus.BAD_REQUEST);
+    }
+
+    if (place.userId !== userId) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+
     return this.repository.place.update({
       where: { id },
       data: updatePlaceDto,
     });
   }
 
-  remove(id: string) {
-    return this.repository.place.delete({
+  async remove(id: string, userId: string) {
+    const place = await this.repository.place.findUnique({
       where: { id },
     });
+
+    if (!place) {
+      throw new HttpException('Place not found', HttpStatus.BAD_REQUEST);
+    }
+
+    if (place.userId !== userId) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+
+    await this.repository.place.delete({
+      where: { id },
+    });
+
+    return { message: 'Place deleted successfully' };
   }
 }

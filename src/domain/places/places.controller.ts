@@ -38,15 +38,19 @@ export class PlacesController {
     return this.placesService.findOne(id);
   }
 
-  // TODO: only owner can update
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
-    return this.placesService.update(id, updatePlaceDto);
+  update(
+    @Param('id') id: string,
+    @Body() updatePlaceDto: UpdatePlaceDto,
+    @Request() request: Request,
+  ) {
+    return this.placesService.update(id, updatePlaceDto, request['userId']);
   }
 
-  // TODO: only owner can delete
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.placesService.remove(id);
+  remove(@Param('id') id: string, @Request() request: Request) {
+    return this.placesService.remove(id, request['userId']);
   }
 }

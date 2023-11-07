@@ -21,6 +21,7 @@
 - [ ] error handling
 - [ ] logger
 - [ ] tests
+  - [ ] users service
 - [ ] docker
 - [ ] CI/CD
 - [ ] deploy

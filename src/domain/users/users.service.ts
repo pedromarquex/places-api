@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
+import { LoginUserDto } from './dto/login-user-dto';
 
 @Injectable()
 export class UsersService {
@@ -45,7 +46,7 @@ export class UsersService {
     });
   }
 
-  async login(createUserDto: CreateUserDto) {
+  async login(createUserDto: LoginUserDto) {
     const { password, email } = createUserDto;
 
     const userExists = await this.repository.user.findUnique({

@@ -10,7 +10,8 @@
 
 ### Places
 - [x] create place
-- [x] get place
+- [x] get place by id
+- [x] get all places
 - [ ] get places by user id
 - [x] update place
 - [x] delete place
